@@ -52,19 +52,26 @@ switch (direction) {
 }
   }
 
+  
   function move(evt) {
     // This event handler can use the helper above to obtain a new index for the "B",
     // and change any states accordingly.
+    const direction = evt.target.id;
       const nextIndex = getNextIndex(evt.target.id);
       if (nextIndex !== currentIndex) {
         setCurrentIndex(nextIndex);
         setSteps(steps + 1);
         setMessage('');
-      } else {
-        setMessage('Cannot move in that direction');
-    }
+      }else if(direction === 'up' && x + 1 > 0 ){
+        setMessage("You can't go up");
+      }else if(direction === 'left' && x + 1 > 0 ){
+        setMessage("You can't go left");
+      }else if(direction === 'down' && x + 1 > 0 ){
+        setMessage("You can't go down");
+      }else if(direction === 'right' && x + 1 > 0 ){
+        setMessage("You can't go right");
+      }
   }
-
   function onChange(evt) {
     // You will need this to update the value of the input.
     setEmail(evt.target.value);
@@ -93,7 +100,7 @@ switch (direction) {
   <div id="wrapper" className={props.className}>
   <div className="info">
     <h3 id="coordinates">{getXYMessage()}</h3>
-    <h3 id="steps">You moved {steps} times</h3>
+    <h3 id="steps">{steps === 1 ? `You moved ${steps} time` : `You moved ${steps} times`}</h3>
   </div>
   <div id="grid">
     {[0, 1, 2, 3, 4, 5, 6, 7, 8].map(idx => (

@@ -67,6 +67,7 @@ class App extends React.Component {
   move = (evt) => {
     // This event handler can use the helper above to obtain a new index for the "B",
     // and change any states accordingly.
+    const { x } = this.getXY();
     const direction = evt.target.id
     const nextIndex = this.getNextIndex(direction)
     if (nextIndex !== this.state.index) {
@@ -75,6 +76,14 @@ class App extends React.Component {
         steps: this.state.steps + 1,
         message: '',
       })
+    }else if(direction === 'up' && x + 1 > 0 ){
+      this.setState({message: "You can't go up"});
+    }else if(direction === 'left' && x + 1 > 0 ){
+      this.setState({message: "You can't go left"});
+    }else if(direction === 'down' && x + 1 > 0 ){
+      this.setState({message: "You can't go down"});
+    }else if(direction === 'right' && x + 1 > 0 ){
+      this.setState({message: "You can't go right"});
     }
   }
 
@@ -110,7 +119,7 @@ class App extends React.Component {
       <div id="wrapper" className={className}>
         <div className="info">
           <h3 id="coordinates">{this.getXYMessage()}</h3>
-          <h3 id="steps">You moved {steps} times</h3>
+          <h3 id="steps">{steps === 1 ? `You moved ${steps} time` : `You moved ${steps} times`}</h3>
         </div>
         <div id="grid">
           {
@@ -125,10 +134,10 @@ class App extends React.Component {
           <h3 id="message">{message}</h3>
         </div>
         <div id="keypad">
-          <button id="left" onClick={evt => this.move(evt, 'left')}>LEFT</button>
-          <button id="up" onClick={evt => this.move(evt, 'up')}>UP</button>
-          <button id="right" onClick={evt => this.move(evt, 'right')}>RIGHT</button>
-          <button id="down" onClick={evt => this.move(evt, 'down')}>DOWN</button>
+          <button id="left" onClick={this.move}>LEFT</button>
+          <button id="up" onClick={this.move}>UP</button>
+          <button id="right" onClick={this.move}>RIGHT</button>
+          <button id="down" onClick={this.move}>DOWN</button>
           <button id="reset" onClick={this.reset}>reset</button>
         </div>
         <form onSubmit={this.onSubmit}>
