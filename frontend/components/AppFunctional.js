@@ -23,7 +23,6 @@ export default function AppFunctional(props) {
     // It it not necessary to have a state to track the "Coordinates (2, 2)" message for the user.
     // You can use the `getXY` helper above to obtain the coordinates, and then `getXYMessage`
     // returns the fully constructed string.
-    ;
     return `Coordinates (${x + 1}, ${y + 1})`;
   }
 
@@ -39,8 +38,6 @@ export default function AppFunctional(props) {
     // This helper takes a direction ("left", "up", etc) and calculates what the next index
     // of the "B" would be. If the move is impossible because we are at the edge of the grid,
     // this helper should return the current index unchanged.
-const { x, y } = getXY();
-
 switch (direction) {
   case 'left':
     return x === 0 ? currentIndex : currentIndex - 1;
@@ -77,14 +74,16 @@ switch (direction) {
       // Use a POST request to send a payload to the server.
       evt.preventDefault();
       const payload = {
-        x: parseInt(x),
-        y: parseInt(y),
+        x: parseInt(x+1),
+        y: parseInt(y+1),
         steps: parseInt(steps),
         email: email,
       };      
       axios.post('http://localhost:9000/api/result', payload)
         .then(response => {
-           setMessage(response.data.message)})
+           setMessage(response.data.message)
+          setEmail('')
+          })
         .catch(error => {
           setMessage(error.response.data.message)});
     }

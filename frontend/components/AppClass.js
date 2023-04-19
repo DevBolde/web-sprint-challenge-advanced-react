@@ -1,5 +1,6 @@
 import React from 'react'
 import axios from 'axios'
+
 const initialMessage = ''
 const initialEmail = ''
 const initialSteps = 0
@@ -87,18 +88,18 @@ class App extends React.Component {
     evt.preventDefault();
     const { x, y } = this.getXY();
     const payload = {
-      x: parseInt(x),
-      y: parseInt(y),
+      x: parseInt(x + 1),
+      y: parseInt(y + 1),
       steps: parseInt(this.state.steps),
       email:this.state.email,
     };      
     axios.post('http://localhost:9000/api/result', payload)
       .then(response => {
-        debugger;
-         this.setState({...this.state, message: response.data.message})})
+         this.setState({ message: response.data.message})
+        this.setState({ email: initialEmail})
+        })
       .catch(error => {
-        debugger;
-        this.setState({...this.state, message: error.response.data.message})})
+        this.setState({ message: error.response.data.message})})
   }
 
   render() {
