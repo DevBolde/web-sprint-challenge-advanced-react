@@ -1,5 +1,5 @@
 import React from 'react'
-
+import axios from 'axios'
 const initialMessage = ''
 const initialEmail = ''
 const initialSteps = 0
@@ -24,11 +24,13 @@ class App extends React.Component {
     return { x, y }
   }
 
+   
+
   getXYMessage = () => {
     // It it not necessary to have a state to track the "Coordinates (2, 2)" message for the user.
     // You can use the `getXY` helper above to obtain the coordinates, and then `getXYMessage`
     // returns the fully constructed string.
-    const { x, y } = this.getXY()
+    const { x, y } = this.getXY();
     return `Coordinates (${x + 1}, ${y + 1})`
   }
 
@@ -82,24 +84,21 @@ class App extends React.Component {
 
   onSubmit = (evt) => {
     // Use a POST request to send a payload to the server.
-    evt.preventDefault()
-    const { email, message } = this.state
-    const payload = { email, message }
-    fetch('/api/send', {
-      method: 'POST',
-      body: JSON.stringify(payload),
-      headers: { 'Content-Type': 'application/json' },
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Failed to send message')
-        }
-        this.setState({ message: 'Message sent successfully' })
-      })
-      .catch((error) => {
-        console.error(error)
-        this.setState({ message: 'Failed to send message' })
-      })
+    evt.preventDefault();
+    const { x, y } = this.getXY();
+    const payload = {
+      x: parseInt(x),
+      y: parseInt(y),
+      steps: parseInt(this.state.steps),
+      email:this.state.email,
+    };      
+    axios.post('http://localhost:9000/api/result', payload)
+      .then(response => {
+        debugger;
+         this.setState({...this.state, message: response.data.message})})
+      .catch(error => {
+        debugger;
+        this.setState({...this.state, message: error.response.data.message})})
   }
 
   render() {

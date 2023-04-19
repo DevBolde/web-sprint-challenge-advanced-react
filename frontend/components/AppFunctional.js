@@ -17,11 +17,13 @@ export default function AppFunctional(props) {
     return { x, y };
   }
 
+  const { x, y } = getXY();
+
   function getXYMessage() {
     // It it not necessary to have a state to track the "Coordinates (2, 2)" message for the user.
     // You can use the `getXY` helper above to obtain the coordinates, and then `getXYMessage`
     // returns the fully constructed string.
-    const { x, y } = getXY();
+    ;
     return `Coordinates (${x + 1}, ${y + 1})`;
   }
 
@@ -82,11 +84,9 @@ switch (direction) {
       };      
       axios.post('http://localhost:9000/api/result', payload)
         .then(response => {
-          debugger;
            setMessage(response.data.message)})
         .catch(error => {
-          debugger;
-          setMessage(error.message)});
+          setMessage(error.response.data.message)});
     }
     
 
