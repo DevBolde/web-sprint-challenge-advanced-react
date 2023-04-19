@@ -1,19 +1,13 @@
 import React, {useState} from 'react'
+import axios from 'axios'
 
-// Suggested initial states
-// const [initialMessage, setInitialMessage] = useSate('')
-// const [initialEmail, setInitialEmail] = useState('')
-// const [initialSteps,setInitialSteps] = useState(0)
-// const [initialIndex, setInitialIndex] = useState(4) // the index the "B" is at
-
-// export default function AppFunctional(props) {
-//   // THE FOLLOWING HELPERS ARE JUST RECOMMENDATIONS.
-//   // You can delete them and build your own logic from scratch.
 export default function AppFunctional(props) {
+  // THE FOLLOWING HELPERS ARE JUST RECOMMENDATIONS.
+  // You can delete them and build your own logic from scratch.
   const [message, setMessage] = useState('');
   const [email, setEmail] = useState('');
   const [steps, setSteps] = useState(0);
-  const [currentIndex, setCurrentIndex] = useState(4);
+  const [currentIndex, setCurrentIndex] = useState(4);// the index the "B" is at
 
   function getXY() {
     // It it not necessary to have a state to track the coordinates.
@@ -77,21 +71,24 @@ switch (direction) {
     setEmail(evt.target.value);
   }
 
-  function onSubmit(evt) {
-    // Use a POST request to send a payload to the server.
-    evt.preventDefault();
-    const payload = { email, moves: steps };
-    fetch('/api/move', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(payload)
-    })
-      .then(response => response.json())
-      .then(data => setMessage(data.message))
-      .catch(error => setMessage(error.message));
-  }
+    function onSubmit(evt) {
+      // Use a POST request to send a payload to the server.
+      evt.preventDefault();
+      const payload = {
+        x: parseInt(x),
+        y: parseInt(y),
+        steps: parseInt(steps),
+        email: email,
+      };      
+      axios.post('http://localhost:9000/api/result', payload)
+        .then(response => {
+          debugger;
+           setMessage(response.data.message)})
+        .catch(error => {
+          debugger;
+          setMessage(error.message)});
+    }
+    
 
  return (
   <div id="wrapper" className={props.className}>
